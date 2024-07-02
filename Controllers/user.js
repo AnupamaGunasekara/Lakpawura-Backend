@@ -167,50 +167,10 @@ module.exports.addNewPassword = async (req, res) => {
   }
 };
 
-module.exports.getuserincomedetails = async (req, res) => {
-  try {
-    const result = await userService.getuserincomedetails(req.params.id);
 
-    if (result.status) {
-      return res.json({ Status: "Success", Data: result.data });
-    } else {
-      return res.status(400).json({ status: false });
-    }
-  } catch (error) {
-    return res.status(400).json({ status: false, message: error.message });
-  }
-};
 
-module.exports.updateincomedetails = async (req, res) => {
-  try {
-    if (Object.keys(req.body).length === 0) {
-      return res.status(400).json({ error: "empty request" });
-    }
-    const result = await userService.updateincomedetails(req.body);
 
-    if (result.status) {
-      return res.json({ Status: "Success" });
-    } else {
-      return res.status(400).json({ Status: "NotSuccess" });
-    }
-  } catch (error) {
-    return res
-      .status(400)
-      .json({ Status: "NotSuccess", message: error.message });
-  }
-};
 
-module.exports.getNotifications = async (req, res) => {
-  try {
-    console.log(req.params.id);
-    const result = await userService.getNotifications(req.params.id);
-
-    console.log(result);
-    return res.status(200).json(result);
-  } catch (error) {
-    return { status: false };
-  }
-};
 
 module.exports.updatePassword = async (req, res) => {
   try {
@@ -256,94 +216,8 @@ module.exports.fileUpload = async (req, res) => {
   }
 };
 
-//get name and tin
-module.exports.getUserDetails = async (req, res) => {
-  try {
-    const id = req.params.id;
 
-    const result = await userService.getUserDetails(id);
-    if (result.status) {
-      return res.json({ Status: "Success", Data: result.data });
-    } else {
-      return res.status(400).json({ Status: "NotSuccess" });
-    }
-  } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
-  }
-};
 
-//get tax calculations
-module.exports.getTaxCalDetails = async (req, res) => {
-  try {
-    const id = req.params.id;
-    const result = await userService.getTaxCalDetails(id);
-    if (result.status) {
-      return res.json({
-        Status: "Success",
-        Data: result.data,
-        Data2: result.data2,
-      });
-    } else {
-      return res.status(400).json({ Status: "NotSuccess" });
-    }
-  } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
-  }
-};
 
-//generate Tax Report
-module.exports.generateTaxReport = async (req, res) => {
-  try {
-    const id = req.params.id;
-    const result = await userService.generateTaxReport(id);
 
-    if (result.status) {
-      // res.download(result.filePath);
-      return res.json({
-        Status: "Successfully Generated",
-        Data: result.filePath,
-      });
-    } else {
-      return res.status(400).json({ Status: result.msg });
-    }
-  } catch (error) {
-    res.status(500).send("Error generating tax report");
-  }
-};
 
-module.exports.getNotifications = async (req, res) => {
-  try {
-    console.log(req.params.id);
-    const result = await userService.getNotifications(req.params.id);
-
-    // console.log(result.data);
-    return res.status(200).json(result);
-  } catch (error) {
-    return { status: false };
-  }
-};
-
-module.exports.getCalculatedTax = async (req, res) => {
-  try {
-    console.log(req.params.id);
-    const result = await userService.getCalculatedTax(req.params.id);
-    if (result.status) {
-      return res
-        .status(200)
-        .json({ Status: "successfully fetched", Data: result.data, Data2: result.data2 });
-    } else {
-      return res.status(400).json({ Status: "Error fetching taxes" });
-    }
-  } catch (error) {
-    return res.status(500).send("Error fetching taxes");
-}
-};
-
-module.exports.updateNotificationStatus = async (req, res) => {
-  try {
-    const result = await userService.updateNotificationStatus(req.body.id);
-    return res.status(200).json(result);
-  } catch (error) {
-    return { status: false };
-  }
-};

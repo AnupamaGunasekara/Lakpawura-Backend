@@ -52,26 +52,10 @@ router.get("/reset-password/:id/:token", userController.resetPassword);
 
 router.post("/addnew-password/:id/:token", userController.addNewPassword);
 
-router.get(
-  "/getuserincomedetails/:id",
-  JwtService.verifyuser,
-  JwtService.roleBasedAuth(["user", "admin", "secondAdmin"]),
-  userController.getuserincomedetails
-);
 
-router.patch(
-  "/updateincomedetails",
-  JwtService.verifyuser,
-  JwtService.roleBasedAuth(["user", "admin", "secondAdmin"]),
-  userController.updateincomedetails
-);
 
-router.get(
-  "/getNotifications/:id",
-  JwtService.verifyuser,
-  JwtService.roleBasedAuth(["user", "admin", "secondAdmin"]),
-  userController.getNotifications
-);
+
+
 
 router.patch("/updatePassword", userController.updatePassword);
 
@@ -82,21 +66,6 @@ router.post(
   userController.fileUpload
 );
 
-router.get("/getUserDetails/:id", userController.getUserDetails);
 
-//Get tax details for view
-router.get("/getTaxCalDetails/:id", userController.getTaxCalDetails);
-
-//Generate tax report
-router.get("/generate-report/:id", userController.generateTaxReport);
-
-router.get("/getNotifications/:id", userController.getNotifications);
-
-router.get("/getCalculatedTax/:id", userController.getCalculatedTax);
-
-router.patch(
-  "/updateNotificationStatus",
-  userController.updateNotificationStatus
-);
 
 module.exports = router;

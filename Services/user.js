@@ -92,23 +92,7 @@ module.exports.addNewPassword = async (id, token, newPassword) => {
   }
 };
 
-module.exports.getuserincomedetails = async (id) => {
-  try {
-    const created = await userRepository.getuserincomedetails(id);
-    return created;
-  } catch (error) {
-    return { status: false, message: error.message };
-  }
-};
 
-module.exports.updateincomedetails = async (data) => {
-  try {
-    const created = await userRepository.updateincomedetails(data);
-    return created;
-  } catch (error) {
-    return { status: false, message: error.message };
-  }
-};
 
 module.exports.verifyEmail = async (emailToken) => {
   try {
@@ -119,27 +103,9 @@ module.exports.verifyEmail = async (emailToken) => {
   }
 };
 
-module.exports.getNotifications = async (id) => {
-  try {
-    const created = await userRepository.getNotifications(id);
-    return created;
-  } catch (error) {
-    return { status: false, message: error.message };
-  }
-};
 
-module.exports.getCalculatedTax = async (id) => {
-  try {
-    const created = await userRepository.getCalculatedTax(id);
-    if (created.status) {
-      return { status: true, data: created.data, data2: created.data2 };
-    } else {
-      return { status: false };
-    }
-  } catch (error) {
-    return { status: false, message: error.message};
-}
-};
+
+
 
 module.exports.updatePassword = async (token, data) => {
   try {
@@ -160,74 +126,4 @@ module.exports.fileUpload = async (userId, fileData) => {
   }
 };
 
-//get tin and name
-module.exports.getUserDetails = async (userId) => {
-  try {
-    if (!userId) {
-      return { status: false };
-    }
-    const values = await userRepository.getUserDetails(userId);
 
-    if (values.status) {
-      return { status: true, data: values.data };
-    } else {
-      return { status: false };
-    }
-  } catch (error) {
-    return { status: false };
-  }
-};
-
-//get tax calculations(under development)
-module.exports.getTaxCalDetails = async (userId) => {
-  try {
-    if (!userId) {
-      return { status: false };
-    }
-    const values = await userRepository.getTaxCalDetails(userId);
-
-    if (values.status) {
-      return { status: true, data: values.data, data2: values.data2 };
-    } else {
-      return { status: false };
-    }
-  } catch (error) {
-    return { status: false };
-  }
-};
-
-//generate tax report
-module.exports.generateTaxReport = async (userId) => {
-  try {
-    if (!userId) {
-      return { status: false };
-    }
-    const values = await userRepository.generateTaxReport(userId);
-
-    if (values.status) {
-      return { status: true, filePath: values.filePath };
-    } else {
-      return { status: false, msg: values.msg };
-    }
-  } catch (error) {
-    return { status: false, msg: "Error generateTaxReport in service" };
-  }
-};
-
-module.exports.getNotifications = async (id) => {
-  try {
-    const created = await userRepository.getNotifications(id);
-    return created;
-  } catch (error) {
-    return { status: false, message: error.message };
-  }
-};
-
-module.exports.updateNotificationStatus = async (id) => {
-  try {
-    const created = await userRepository.updateNotificationStatus(id);
-    return created;
-  } catch (error) {
-    return { status: false, message: error.message };
-  }
-};

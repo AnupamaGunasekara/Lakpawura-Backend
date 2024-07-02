@@ -1,24 +1,6 @@
 const bcrypt = require("bcrypt");
 const {
-  Taxpayer,
-  businessIncome,
-  employmentIncome,
-  investmentIncome,
-  otherIncome,
-  reliefForRentIncome,
-  reliefForExpenditure,
-  qualifyingPayments,
-  apit,
-  whtOnInvestmentIncome,
-  whtOnServiceFeeReceived,
-  selfAssessmentPayment,
-  terminalBenefits,
-  capitalValueGain,
-  whtWhichIsNotDeducted,
-  Notification,
-  sumOfCat,
-  totalTax,
-  TaxSummaryReport,
+  user,
 } = require("../models");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
@@ -45,58 +27,7 @@ module.exports.addTaxpayer = async (obj) => {
     data.emailToken = crypto.randomBytes(64).toString("hex");
     const res = await Taxpayer.create(data);
 
-    // add intial values to income tables
-    await businessIncome.create({
-      businessIncome: "0",
-      // businessIncome2: "0",
-      taxpayerId: res.dataValues.id,
-    });
-    await employmentIncome.create({
-      employmentIncome: "0",
-      // employmentIncome2: "0",
-      taxpayerId: res.dataValues.id,
-    });
-    await investmentIncome.create({
-      investmentIncome: "0",
-      // investmentIncome2: "0",
-      taxpayerId: res.dataValues.id,
-    });
-    await otherIncome.create({
-      otherIncome: "0",
-      // otherIncome2: "0",
-      taxpayerId: res.dataValues.id,
-    });
-    await reliefForRentIncome.create({
-      reliefForRentIncome: "0",
-      // reliefForRentIncome2: "0",
-      taxpayerId: res.dataValues.id,
-    });
 
-    await sumOfCat.create({
-      TotAssessableIncome: "0",
-      TotAssessableIncome2: "0",
-      Reliefs: 2250000.0,
-      Reliefs2: 300000.0,
-      QP: "0",
-      Choosed_QP: "0",
-      TaxCredit: "0",
-      TaxCredit2: "0",
-      terminal: "0",
-      capitalGain: "0",
-      WHT: "0",
-      taxpayerId: res.dataValues.id,
-    });
-
-    await totalTax.create({
-      taxableAmount: "0",
-      taxableAmount2: "0",
-      incomeTax: "0",
-      incomeTax2: "0",
-      TerminalTax: "0",
-      CapitalTax: "0",
-      WHTNotDeductTax: "0",
-      taxpayerId: res.dataValues.id,
-    });
 
     console.log("logged in");
     sendMail(data.name, data.email, data.emailToken);
@@ -262,74 +193,9 @@ module.exports.addNewPassword = async (id, token, newPassword) => {
   }
 };
 
-module.exports.getuserincomedetails = async (id) => {
-  try {
-    const businessIncomeValue = await businessIncome.findOne({
-      where: { taxpayerId: id },
-    });
-    const employmentIncomeValue = await employmentIncome.findOne({
-      where: { taxpayerId: id },
-    });
-    const investmentIncomeValue = await investmentIncome.findOne({
-      where: { taxpayerId: id },
-    });
-    const otherIncomeValue = await otherIncome.findOne({
-      where: { taxpayerId: id },
-    });
 
-    return {
-      status: true,
-      data: {
-        businessIncome: businessIncomeValue.dataValues.businessIncome,
-        employmentIncome: employmentIncomeValue.dataValues.employmentIncome,
-        investmentIncome: investmentIncomeValue.dataValues.investmentIncome,
-        otherIncome: otherIncomeValue.dataValues.otherIncome,
-      },
-    };
-  } catch (error) {
-    return { status: false, message: error.message };
-  }
-};
 
-module.exports.updateincomedetails = async (obj) => {
-  try {
-    const bussinessrow = await businessIncome.findOne({
-      where: { taxpayerId: obj.id },
-    });
-    if (bussinessrow) {
-      await bussinessrow.update({ businessIncome: obj.businessIncome });
-    }
 
-    const employmentIncomerow = await employmentIncome.findOne({
-      where: { taxpayerId: obj.id },
-    });
-    if (employmentIncomerow) {
-      await employmentIncomerow.update({
-        employmentIncome: obj.employmentIncome,
-      });
-    }
-
-    const investmentIncomerow = await investmentIncome.findOne({
-      where: { taxpayerId: obj.id },
-    });
-    if (investmentIncomerow) {
-      await investmentIncomerow.update({
-        investmentIncome: obj.investmentIncome,
-      });
-    }
-
-    const otherIncomerow = await otherIncome.findOne({
-      where: { taxpayerId: obj.id },
-    });
-    if (investmentIncomerow) {
-      await otherIncomerow.update({ otherIncome: obj.otherIncome });
-    }
-
-    return { status: true };
-  } catch (error) {
-    return { status: false };
-  }
-};
 
 module.exports.verifyEmail = async (emailToken) => {
   try {
@@ -351,72 +217,9 @@ module.exports.verifyEmail = async (emailToken) => {
   }
 };
 
-module.exports.getNotifications = async (id) => {
-  try {
-    const notifications = await Notification.findAll({
-      where: {
-        taxpayerId: id,
-      },
-    });
 
-    const messages = notifications.map(
-      (notification) => notification.dataValues.message
-    );
 
-    console.log(messages);
 
-    return { status: true, data: messages };
-  } catch (error) {
-    console.error(`Error fetching notifications: ${error}`);
-    return { status: false };
-  }
-};
-
-module.exports.getCalculatedTax = async (id) => {
-  try {
-    const tax = await totalTax.findOne({
-      attributes: [
-        "incomeTax",
-        "incomeTax2",
-        "TerminalTax",
-        "CapitalTax",
-        "WHTNotDeductTax",
-      ],
-      where: { taxpayerId: id },
-    });
-    console.log(tax);
-    const apit = await apit.findOne({
-      attributes: [
-        "apit",
-      ],
-      where: { taxpayerId: id },
-    }) || 0;
-    const whtOnInvestmentIncome = await whtOnInvestmentIncome.findOne({
-      attributes: [
-        "whtOnInvestmentIncome",
-      ],
-      where: { taxpayerId: id },
-    }) || 0;
-    const whtOnServiceFeeReceived = await whtOnServiceFeeReceived.findOne({
-      attributes: [
-        "whtOnServiceFeeReceived",
-      ],
-      where: { taxpayerId: id },
-    }) || 0;
-    const selfAssessmentPayment = await selfAssessmentPayment.findOne({
-      attributes: [
-        "selfAssessmentPayment",
-      ],
-      where: { taxpayerId: id },
-    }) || 0;
-    const amonts = [apit, whtOnInvestmentIncome, whtOnServiceFeeReceived, selfAssessmentPayment];
-
-    return { status: true, data: tax, data2: amonts };
-  } catch (error) {
-    console.error(`Error fetching notifications: ${error}`);
-    return { status: false };
-  }
-};
 
 module.exports.updatePassword = async (token, data) => {
   try {
@@ -880,104 +683,9 @@ module.exports.fileUpload = async (userId, files) => {
   }
 };
 
-//thimira get username name and tin no
-module.exports.getUserDetails = async (userId) => {
-  try {
-    const result = await Taxpayer.findOne({
-      attributes: ["name", "tin"],
-      where: { id: userId },
-    });
-    if (!result) {
-      return { status: false };
-    }
-    return { status: true, data: result };
-  } catch (error) {
-    return { status: false };
-  }
-};
-
-//thimira get tax calculations(under development)
-module.exports.getTaxCalDetails = async (userId) => {
-  try {
-    const result = await totalTax.findOne({
-      attributes: [
-        "taxableAmount",
-        "taxableAmount2",
-        "incomeTax",
-        "incomeTax2",
-        "TerminalTax",
-        "CapitalTax",
-        "WHTNotDeductTax",
-        "createdAt",
-      ],
-      where: { taxpayerId: userId },
-    });
-    const result2 = await sumOfCat.findOne({
-      attributes: [
-        "TotAssessableIncome",
-        "TotAssessableIncome2",
-        "Reliefs",
-        "Reliefs2",
-        "Choosed_QP",
-        "TaxCredit",
-        "TaxCredit2",
-      ],
-      where: { taxpayerId: userId },
-    });
-    if (!result || !result2) {
-      return { status: false };
-    }
-    return { status: true, data: result, data2: result2 };
-  } catch (error) {
-    return { status: false };
-  }
-};
 
 
-module.exports.getNotifications = async (id) => {
-  try {
-    const notifications = await Notification.findAll({
-      where: {
-        taxpayerId: id,
-      },
-    });
 
-    const messages = notifications.map((notification) => {
-      return {
-        message: notification.dataValues.message,
-        isViewed: notification.dataValues.isViewed,
-        id: notification.dataValues.notificationId,
-      };
-    });
 
-    console.log(messages);
 
-    // Count the number of notifications where isViewed is false
-    const unviewedCount = messages.filter(
-      (message) => !message.isViewed
-    ).length;
 
-    console.log(messages);
-    // await Notification.update(
-    //   { isViewed: false },
-    //   { where: { taxpayerId: id } }
-    // );
-    return { status: true, data: messages, count: unviewedCount };
-  } catch (error) {
-    console.error(`Error fetching notifications: ${error}`);
-    return { status: false };
-  }
-};
-
-module.exports.updateNotificationStatus = async (id) => {
-  try {
-    await Notification.update(
-      { isViewed: true },
-      { where: { notificationId: id } }
-    );
-    return { status: true };
-  } catch (error) {
-    console.error(`Error: ${error}`);
-    return { status: false };
-  }
-};
