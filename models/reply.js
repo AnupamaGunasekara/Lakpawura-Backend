@@ -12,16 +12,16 @@ module.exports = (sequelize, DataTypes) => {
         },
     });
 
-    Reply.associate = (models) => {
-        Reply.belongsTo(models.user, {
-            foreignKey: "userId",
-            targetKey: "id",
-        });
-        Reply.belongsTo(models.comment, {
-            foreignKey: "commentId",
-            targetKey: "id",
-        });
-    };
+    // Reply.associate = (models) => {
+    //     Reply.belongsTo(models.user, {
+    //         foreignKey: "userId",
+    //         targetKey: "id",
+    //     });
+    //     Reply.belongsTo(models.comment, {
+    //         foreignKey: "commentId",
+    //         targetKey: "id",
+    //     });
+    // };
 
     return Reply;
 };

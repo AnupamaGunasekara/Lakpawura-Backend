@@ -63,7 +63,7 @@ module.exports = (sequelize, DataTypes) => {
 
   user.associate = (models) => {
     user.hasMany(models.post, { foreignKey: "userId" }); 
-  };
+  }; 
 
   return user;
 };

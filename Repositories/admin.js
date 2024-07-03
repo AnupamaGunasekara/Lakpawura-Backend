@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt");
-const { admin, SecondAdmin, Notification,Policies } = require("../models");
+const { admin } = require("../models");
 const jwt = require("jsonwebtoken");
 
 

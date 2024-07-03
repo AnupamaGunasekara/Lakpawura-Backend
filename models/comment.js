@@ -12,15 +12,16 @@ module.exports = (sequelize, DataTypes) => {
         },
     });
 
-    Comment.associate = (models) => {
-        Comment.belongsTo(models.user, {
-            foreignKey: "userId",
-            targetKey: "id",
-        });
-        Comment.hasMany(models.reply, {
-            foreignKey: "commentId"
-        });
-    };
+    // Comment.associate = (models) => {
+    //     Comment.belongsTo(models.user, {
+    //         foreignKey: "userId",
+    //         targetKey: "id",
+    //     });
+    //     Comment.belongsTo(models.post, {
+    //         foreignKey: "postId",
+    //         targetKey: "id",
+    //     });
+    // };
 
     return Comment;
-};
+}; 
