@@ -23,17 +23,13 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: false,
       allowNull: false,
     },
+    review:{
+      type:DataTypes.INTEGER,
+      allowNull: false,
+  }
   });
 
-  // post.associate = (models) => {
-  //   post.belongsTo(models.user, {
-  //     foreignKey: "userId", // This is the foreign key in the post table referencing users's id
-  //     targetKey: "id", // The target key in the user table to which the foreign key in the post table refers
-  //   });
-  //   post.hasMany(models.images, {
-  //     foreignKey: "commentId",
-  //   });
-  // };
+
 
   post.associate = (models) => {
     post.hasMany(models.comment, { foreignKey: "postId" }); 

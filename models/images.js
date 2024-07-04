@@ -16,12 +16,6 @@ module.exports = (sequelize, DataTypes) => {
     },
   });
 
-  // images.associate = (models) => {
-  //   images.belongsTo(models.post, {
-  //     foreignKey: "postId", // This is the foreign key in the post table referencing users's id
-  //     targetKey: "id", // The target key in the user table to which the foreign key in the post table refers
-  //   });
-  // };
 
   return images;
 };

@@ -40,3 +40,4 @@ db.sequelize.sync({force: true}).then(() => {
     console.log("Server running on port 3000");
   });
 }); 
+ 
