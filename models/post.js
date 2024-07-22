@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     author: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     title: {
       type: DataTypes.STRING,
@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     discription: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     isVerified: {
       type: DataTypes.BOOLEAN,
@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     review:{
       type:DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
   }
   });
 
