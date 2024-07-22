@@ -86,6 +86,16 @@ module.exports.loginadmin = async (req, res) => {
 };
 
 
+module.exports.getmessages = async (req, res) => {
+  try {
+    const messages = await adminService.getmessages();
+    return res.json(messages);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+
 
 
 

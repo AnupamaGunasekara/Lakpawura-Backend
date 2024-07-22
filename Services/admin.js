@@ -87,5 +87,14 @@ module.exports.loginadmin = async (data) => {
   }
 };
 
+module.exports.getmessages = async () => {
+  try {
+    const messages = await adminRepository.getmessages();
+    return messages;
+  } catch (error) {
+    throw new Error(`Error while fetching taxpayers: ${error.message}`);
+  }
+};
+
 
 
