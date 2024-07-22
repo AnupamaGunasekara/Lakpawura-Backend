@@ -68,5 +68,6 @@ router.post(
 
 router.post("/contactUs", userController.contactUs);
 
+router.get("/getposts", userController.getPosts);
 
 module.exports = router;

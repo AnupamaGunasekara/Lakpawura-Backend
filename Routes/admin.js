@@ -13,6 +13,8 @@ router.post('/createfirstadmin',adminController.addFirstAdmin);
 
 router.post('/login',adminController.loginadmin);
 
+router.get('/getmessages',adminController.getmessages);
+
 
 
 

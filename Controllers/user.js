@@ -236,3 +236,9 @@ module.exports.contactUs = async (req, res) => {
         res.status(500).json({ success: false, message: 'Failed to process your contact request at controller.' });
     }
 };
+
+
+module.exports.getPosts = async (req, res) => {
+  const result = await userService.getPosts();
+  return res.json(result);
+};

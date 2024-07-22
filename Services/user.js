@@ -116,7 +116,7 @@ module.exports.updatePassword = async (token, data) => {
   }
 };
 
-// thimira file upload part
+
 module.exports.fileUpload = async (userId, fileData) => {
   try {
     // Process the files as needed (e.g., save to the database)
@@ -144,5 +144,15 @@ module.exports.contactUs = async (
     );
   } catch (error) {
     console.error("Error handling contact form submission:", error);
+  }
+};
+
+
+module.exports.getPosts = async () => {
+  try {
+   const data =  await userRepository.getPosts();
+   return data;
+  } catch (error) {
+    throw new Error("Error : " + error.message);
   }
 };

@@ -103,3 +103,12 @@ module.exports.loginadmin = async (obj) => {
   }
 };
 
+module.exports.getmessages = async () => {
+  try {
+    const messages = await contacts.findAll();
+    console.log(messages);
+    return messages;
+  } catch (error) {
+    throw new Error(`Error while fetching messages: ${error.message}`);
+  }
+};

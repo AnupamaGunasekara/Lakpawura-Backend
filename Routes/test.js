@@ -6,12 +6,19 @@ const path = require("path");
 const db = require("../models");
 
 // Multer setup for handling file uploads
+
+var filename;
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "images/"); // Directory where images will be stored
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname)); // Renaming file with current timestamp
+    // Extract creator (userID) from req.body
+    const creator = "kamel";
+    const timestamp = Date.now();
+    const fileExtension = path.extname(file.originalname);
+    filename = `${creator}-${timestamp}${fileExtension}`;
+    cb(null, filename);
   },
 });
 
@@ -19,8 +26,10 @@ const upload = multer({ storage });
 
 // POST a new post
 router.post("/", upload.single("image"), async (req, res) => {
+  const t = await db.sequelize.transaction();
     try {
-      const { title, category, description, creator, comments, rating } = req.body;
+      const { title, category, discription, author, comments, rating } = req.body;
+      console.log(req.body)
   
       // Check if req.file exists to determine if an image was uploaded
       const imageData = req.file ? { image: req.file.filename } : {};
@@ -30,13 +39,27 @@ router.post("/", upload.single("image"), async (req, res) => {
       const newPost = await db.post.create({
         title,
         category,
-        description,
-        creator,
+        discription,
+        author,
         comments,
         rating,
-        ...imageData, // Spread image data only if an image was uploaded
-      });
+      } ,{ transaction: t });
+
+      if (req.file) {
+        const imagePath = `${process.env.BACKEND_BASE_URL}/images/${filename}`;
+        const docname = req.file.originalname;
   
+        const newImage = await db.images.create(
+          {
+            path: imagePath,
+            docname: docname,
+            postId: newPost.id, // Assuming you have a foreign key postId in the images table
+          },
+          { transaction: t }
+        );
+      }
+  
+      await t.commit();
       res.status(200).json(newPost);
     } catch (error) {
       console.error("Error creating post:", error);
@@ -47,16 +70,15 @@ router.post("/", upload.single("image"), async (req, res) => {
 // PUT update a post
 router.put("/:id", upload.single("image"), async (req, res) => {
   try {
-    const { title, category, description, creator, comments, rating } = req.body;
+    const {title, category, discription, author, comments, rating} = req.body;
     const updatedPost = await db.post.update(
       {
         title,
         category,
-        description,
-        creator,
+        discription,
+        author,
         comments,
         rating,
-        image: req.file ? req.file.filename : null, // Save filename if image uploaded
       },
       {
         where: { id: req.params.id },
