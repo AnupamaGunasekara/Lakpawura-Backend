@@ -22,6 +22,7 @@ module.exports.loginuser = async (data) => {
   try {
     const avalable = await userRepository.loginuser(data);
 
+
     if (avalable.status) {
       const tokenData = {
         id: avalable.id,

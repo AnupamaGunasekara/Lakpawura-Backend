@@ -4,6 +4,7 @@ const multer = require("multer"); // For handling file uploads
 const path = require("path");
 
 const db = require("../models");
+const { where } = require("sequelize");
 
 // Multer setup for handling file uploads
 
@@ -27,50 +28,54 @@ const upload = multer({ storage });
 // POST a new post
 router.post("/", upload.single("image"), async (req, res) => {
   const t = await db.sequelize.transaction();
-    try {
-      const { title, category, discription, author, comments, rating } = req.body;
-      console.log(req.body)
-  
-      // Check if req.file exists to determine if an image was uploaded
-      const imageData = req.file ? { image: req.file.filename } : {};
-      console.log("----------------------------------")
-      console.log("imageData", imageData);
+  try {
+    const { title, category, discription, author, comments, rating } = req.body;
+    console.log(req.body);
 
-      const newPost = await db.post.create({
+    // Check if req.file exists to determine if an image was uploaded
+    const imageData = req.file ? { image: req.file.filename } : {};
+    console.log("----------------------------------");
+    console.log("imageData", imageData);
+
+    const newPost = await db.post.create(
+      {
         title,
         category,
         discription,
         author,
         comments,
         rating,
-      } ,{ transaction: t });
+      },
+      { transaction: t }
+    );
 
-      if (req.file) {
-        const imagePath = `${process.env.BACKEND_BASE_URL}/images/${filename}`;
-        const docname = req.file.originalname;
-  
-        const newImage = await db.images.create(
-          {
-            path: imagePath,
-            docname: docname,
-            postId: newPost.id, // Assuming you have a foreign key postId in the images table
-          },
-          { transaction: t }
-        );
-      }
-  
-      await t.commit();
-      res.status(200).json(newPost);
-    } catch (error) {
-      console.error("Error creating post:", error);
-      res.status(500).json({ error: "Failed to create post" });
+    if (req.file) {
+      const imagePath = `${process.env.BACKEND_BASE_URL}/images/${filename}`;
+      const docname = req.file.originalname;
+
+      const newImage = await db.images.create(
+        {
+          path: imagePath,
+          docname: docname,
+          postId: newPost.id, // Assuming you have a foreign key postId in the images table
+        },
+        { transaction: t }
+      );
     }
-  });
+
+    await t.commit();
+    res.status(200).json(newPost);
+  } catch (error) {
+    console.error("Error creating post:", error);
+    res.status(500).json({ error: "Failed to create post" });
+  }
+});
 
 // PUT update a post
 router.put("/:id", upload.single("image"), async (req, res) => {
+  const t = await db.sequelize.transaction();
   try {
-    const {title, category, discription, author, comments, rating} = req.body;
+    const { title, category, discription, author, comments, rating } = req.body;
     const updatedPost = await db.post.update(
       {
         title,
@@ -84,6 +89,23 @@ router.put("/:id", upload.single("image"), async (req, res) => {
         where: { id: req.params.id },
       }
     );
+    if (req.file) {
+      const imagePath = `${process.env.BACKEND_BASE_URL}/images/${filename}`;
+      const docname = req.file.originalname;
+
+      const newImage = await db.images.update(
+        {
+          path: imagePath,
+          docname: docname,
+        },
+        {
+          where: { postId: req.params.id },
+          transaction: t,
+        }
+      );
+    }
+
+    await t.commit();
     res.status(200).json(updatedPost);
   } catch (error) {
     console.error("Error updating post:", error);

@@ -94,6 +94,6 @@ module.exports.getmessages = async () => {
     const messages = await adminRepository.getmessages();
     return messages;
   } catch (error) {
-    throw new Error(`Error while fetching Users: ${error.message}`);
+    throw new Error(`Error while fetching users: ${error.message}`);
   }
 };

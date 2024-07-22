@@ -33,7 +33,7 @@ module.exports.adduser = async (req, res) => {
   }
 };
 
-module.exports.authenticateUser = async (req, res) => {
+module.exports.authenticateuser = async (req, res) => {
   res.json({ Status: "Success", name: req.name });
 };
 

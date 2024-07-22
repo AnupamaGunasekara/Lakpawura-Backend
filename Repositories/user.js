@@ -13,10 +13,10 @@ const { where } = require("sequelize");
 const { sequelize, DataTypes } = require("../models/index");
 
 
-//register User
-module.exports.addUser = async (obj) => {
+//register user
+module.exports.adduser = async (obj) => {
   try {
-    const existingEmail = await User.findOne({
+    const existingEmail = await user.findOne({
       where: { email: obj.email },
     });
     if (existingEmail) {
@@ -28,7 +28,7 @@ module.exports.addUser = async (obj) => {
     data.password = hashedPw;
     data.password = obj.password;
     data.emailToken = crypto.randomBytes(64).toString("hex");
-    const res = await User.create(data);
+    const res = await user.create(data);
 
 
 
@@ -40,21 +40,21 @@ module.exports.addUser = async (obj) => {
   }
 };
 
-module.exports.loginUser = async (obj) => {
+module.exports.loginuser = async (obj) => {
   try {
-    const User = await User.findOne({
+    const systemuser = await user.findOne({
       where: {
         email: obj.email,
       },
     });
 
-    if (!User) {
-      return { status: false, message: "User not found" };
+    if (!systemuser) {
+      return { status: false, message: "user not found" };
     }
 
     const isMatch = await bcrypt.compare(
       obj.password.toString(),
-      User.password
+      systemuser.password
     );
 
     if (!isMatch) {
@@ -62,8 +62,8 @@ module.exports.loginUser = async (obj) => {
     } else {
       return {
         status: true,
-        name: User.dataValues.name,
-        id: User.dataValues.id,
+        name: systemuser.dataValues.name,
+        id: systemuser.dataValues.id,
       };
     }
   } catch (error) {
@@ -72,21 +72,21 @@ module.exports.loginUser = async (obj) => {
   }
 };
 
-//update User details
+//update user details
 module.exports.updateBasicDetails = async (obj) => {
   try {
-    //checking is there any User with given id and email
-    const existingEmail = await User.findOne({
+    //checking is there any user with given id and email
+    const existingEmail = await user.findOne({
       where: { id: obj.id, email: obj.email },
     });
     const { password, ...dataWithoutPassword } = obj;
     if (existingEmail) {
       console.log("yes");
-      await User.update(dataWithoutPassword, { where: { id: obj.id } });
+      await user.update(dataWithoutPassword, { where: { id: obj.id } });
       console.log("done");
     } else {
       //checking user enterd email is previously entered or not
-      const existingEmail = await User.findOne({
+      const existingEmail = await user.findOne({
         where: { email: obj.email },
       });
       if (existingEmail) {
@@ -95,7 +95,7 @@ module.exports.updateBasicDetails = async (obj) => {
 
       dataWithoutPassword.emailToken = crypto.randomBytes(64).toString("hex");
       dataWithoutPassword.isVerifiedEmail = false;
-      await User.update(dataWithoutPassword, { where: { id: obj.id } });
+      await user.update(dataWithoutPassword, { where: { id: obj.id } });
       sendMail(
         dataWithoutPassword.name,
         dataWithoutPassword.email,
@@ -112,10 +112,10 @@ module.exports.updateBasicDetails = async (obj) => {
   }
 };
 
-// get User details
+// get user details
 module.exports.getBasicDetails = async (id) => {
   try {
-    const user = await User.findOne({ where: { id: id } });
+    const user = await user.findOne({ where: { id: id } });
     const {
       password,
       emailToken,
@@ -132,7 +132,7 @@ module.exports.getBasicDetails = async (id) => {
 
 module.exports.forgotPassword = async (email) => {
   try {
-    const existingEmail = await User.findOne({ where: { email: email } });
+    const existingEmail = await user.findOne({ where: { email: email } });
 
     if (!existingEmail) {
       console.log("no email");
@@ -144,7 +144,7 @@ module.exports.forgotPassword = async (email) => {
       secret,
       { expiresIn: "15m" }
     );
-    const link = `http://localhost:3000/api/User/reset-password/${existingEmail.id}/${token}`;
+    const link = `http://localhost:3000/api/user/reset-password/${existingEmail.id}/${token}`;
     console.log(link);
     // sendMail here
     sendVerificationMail(existingEmail.id, existingEmail.email, token);
@@ -157,12 +157,12 @@ module.exports.forgotPassword = async (email) => {
 
 module.exports.resetPassword = async (id, token) => {
   try {
-    const oldUser = await User.findOne({ where: { id: id } });
+    const olduser = await user.findOne({ where: { id: id } });
 
-    if (!oldUser) {
-      return { status: false, message: "User Not Exist" };
+    if (!olduser) {
+      return { status: false, message: "user Not Exist" };
     }
-    const secret = process.env.JWT_SECRET + oldUser.dataValues.password;
+    const secret = process.env.JWT_SECRET + olduser.dataValues.password;
     const decoded = jwt.verify(token, secret);
     console.log(decoded);
 
@@ -175,14 +175,14 @@ module.exports.resetPassword = async (id, token) => {
 
 module.exports.addNewPassword = async (id, token, newPassword) => {
   try {
-    const oldUser = await User.findOne({ where: { id: id } });
-    if (!oldUser) {
-      return { status: false, message: "User Not Exist" };
+    const olduser = await user.findOne({ where: { id: id } });
+    if (!olduser) {
+      return { status: false, message: "user Not Exist" };
     }
-    const secret = process.env.JWT_SECRET + oldUser.dataValues.password;
+    const secret = process.env.JWT_SECRET + olduser.dataValues.password;
     const decoded = jwt.verify(token, secret);
     const encryptedPassword = await bcrypt.hash(newPassword.toString(), 8);
-    await User.update(
+    await user.update(
       { password: encryptedPassword },
       { where: { id: id } }
     );
@@ -202,19 +202,19 @@ module.exports.addNewPassword = async (id, token, newPassword) => {
 
 module.exports.verifyEmail = async (emailToken) => {
   try {
-    let user = await User.findOne({ where: { emailToken: emailToken } });
+    let user = await user.findOne({ where: { emailToken: emailToken } });
     console.log(user);
     if (!user) {
       return res
         .status(404)
-        .json({ status: "Failed", error: "User not found" });
+        .json({ status: "Failed", error: "user not found" });
     }
 
-    await User.update(
+    await user.update(
       { isVerifiedEmail: true, emailToken: null },
       { where: { emailToken: emailToken } }
     );
-    return { status: "Success", message: "User verified successfully" };
+    return { status: "Success", message: "user verified successfully" };
   } catch (error) {
     return { status: false, message: error.message };
   }
@@ -228,7 +228,7 @@ module.exports.updatePassword = async (token, data) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const id = decoded.id;
-    const User = await User.findOne({
+    const user = await user.findOne({
       where: {
         id: id,
       },
@@ -236,15 +236,15 @@ module.exports.updatePassword = async (token, data) => {
     console.log(data);
     const isMatch = await bcrypt.compare(
       data.OldPassword.toString(),
-      User.password
+      user.password
     );
 
     if (!isMatch) {
-      return { status: false, message: "User not found" };
+      return { status: false, message: "user not found" };
     }
     const hashedPassword = await bcrypt.hash(data.Password.toString(), 10);
 
-    await User.update(
+    await user.update(
       { password: hashedPassword },
       {
         where: {

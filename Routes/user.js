@@ -24,7 +24,7 @@ const { user } = require("../models");
 
 router.post("/register", userController.adduser);
 
-router.get("/auth", JwtService.verifyuser, userController.authenticateUser);
+router.get("/auth", JwtService.verifyuser, userController.authenticateuser);
 
 router.get("/logout", userController.logoutuser);
 

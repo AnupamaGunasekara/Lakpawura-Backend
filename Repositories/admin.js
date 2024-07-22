@@ -1,19 +1,19 @@
 const bcrypt = require("bcrypt");
-const { admin } = require("../models");
+const { admin,contacts } = require("../models");
 const jwt = require("jsonwebtoken");
 
 
 
 module.exports.addadmin = async (obj) => {
   try {
-    const existingUser1 = await admin.findOne({
+    const existinguser1 = await admin.findOne({
       where: { userName: obj.userName },
     });
-    const existingUser2 = await SecondAdmin.findOne({
+    const existinguser2 = await SecondAdmin.findOne({
       where: { userName: obj.userName },
     });
 
-    if (existingUser1 || existingUser2) {
+    if (existinguser1 || existinguser2) {
       return { status: false, message: "already registered user" };
     }
     const hashedPw = await bcrypt.hash(obj.password.toString(), 10);
