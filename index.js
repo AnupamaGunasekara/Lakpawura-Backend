@@ -35,7 +35,7 @@ const adminRoutes = require("./Routes/admin");
 app.use("/api/user", userRoutes);
 app.use("/api/admin", adminRoutes);
  
-db.sequelize.sync({force: true}).then(() => { 
+db.sequelize.sync({force:false}).then(() => { 
   app.listen(3000, () => {
     console.log("Server running on port 3000");
   });
