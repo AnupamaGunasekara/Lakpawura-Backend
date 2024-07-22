@@ -257,7 +257,7 @@
 
 // contact us
 
-const contacts = require('../models/contacts');
+const { contacts } = require('../models');
 
  module.exports.contactUs = async (firstName,lastName,email,phone,message) => {
   try{
@@ -269,7 +269,7 @@ const contacts = require('../models/contacts');
     }
 
     // If the email does not exist, create a new contact
-    const contact = await contacts.create({ firstName : firstName, lastName : lastName, email : email, phone : phone, message : me });
+    const contact = await contacts.create({ firstName : firstName, lastName : lastName, email : email, phone : phone, message : message });
 
     return { success: true, message: 'Contact information successfully saved.',contact};
   } catch (error) {

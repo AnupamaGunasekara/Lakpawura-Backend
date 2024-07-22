@@ -122,10 +122,9 @@ module.exports.contactUs = async (firstName,lastName,email,phone,message) => {
   try {
     console.log(firstName);
     const result = await userRepository.contactUs(firstName,lastName,email,phone,message);
-    res.status(200).json(result);
   } catch (error) {
     console.error('Error handling contact form submission:', error);
-    res.status(500).json({ success: false, message: 'Failed to process your contact request.' });
+
 }
 
 }
