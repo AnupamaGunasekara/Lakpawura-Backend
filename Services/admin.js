@@ -3,40 +3,20 @@ const JwtService = require("./JwtService");
 
 module.exports.addadmin = async (data) => {
   try {
-    if (data.adminType === "admin" || data.adminType == undefined) {
-      const created = await adminRepository.addadmin(data);
-      if (created.status) {
-        const tokenData = {
-          id: created.id,
-          name: data.name,
-          role: "admin",
-        };
-        const recived = JwtService.createToken(tokenData);
-        return recived;
-      } else if (created.message == "already registered user") {
-        return { status: false, message: "already registered user" };
-      } else {
-        return created;
-      }
+    const created = await adminRepository.addadmin(data);
+    if (created.status) {
+      const tokenData = {
+        id: created.id,
+        name: data.name,
+        role: "admin",
+      };
+      const recived = JwtService.createToken(tokenData);
+      return recived;
     } else {
-      console.log("new here")
-      const created = await DataEntryRepository.addSecondAdmin(data);
-      if (created.status) {
-        const tokenData = {
-          id: created.id,
-          name: data.name,
-          role: "admin",
-        };
-        const recived = JwtService.createToken(tokenData);
-        return recived;
-      } else if (created.message == "already registered user") {
-        return { status: false, message: "already registered user" };
-      } else {
-        return created;
-      }
+      return created;
     }
   } catch (error) {
-    return { status: false, message: error.message };
+    return { status: false, message: created.message };
   }
 };
 

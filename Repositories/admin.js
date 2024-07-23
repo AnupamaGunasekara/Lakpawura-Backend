@@ -2,19 +2,14 @@ const bcrypt = require("bcrypt");
 const { admin,contacts,post } = require("../models");
 const jwt = require("jsonwebtoken");
 
-
-
 module.exports.addadmin = async (obj) => {
   try {
-    const existinguser1 = await admin.findOne({
-      where: { userName: obj.userName },
+    const existingadmin = await admin.findOne({
+      where: { email: obj.email },
     });
-    const existinguser2 = await SecondAdmin.findOne({
-      where: { userName: obj.userName },
-    });
-
-    if (existinguser1 || existinguser2) {
-      return { status: false, message: "already registered user" };
+    console.log(existingadmin);
+    if (existingadmin) {
+      return { status: false, message: "already registered admin" };
     }
     const hashedPw = await bcrypt.hash(obj.password.toString(), 10);
     var data = obj;
@@ -49,16 +44,16 @@ module.exports.addFirstAdmin = async (obj) => {
 
 module.exports.loginadmin = async (obj) => {
   try {
-    const admin = await admin.findOne({
+    const systemadmin = await admin.findOne({
       where: {
-        userName: obj.userName,
+        email: obj.userName,
       },
     });
 
-    if (admin) {
+    if (systemadmin) {
       const isMatch = await bcrypt.compare(
         obj.password.toString(),
-        admin.password
+        systemadmin.password
       );
 
       if (!isMatch) {
@@ -66,39 +61,16 @@ module.exports.loginadmin = async (obj) => {
       } else {
         return {
           status: true,
-          name: admin.dataValues.name,
-          id: admin.dataValues.id,
+          name: systemadmin.dataValues.name,
+          id: systemadmin.dataValues.id,
           type: "admin",
-        };
-      }
-    }
-
-    const secondAdmin = await SecondAdmin.findOne({
-      where: {
-        userName: obj.userName,
-      },
-    });
-
-    if (secondAdmin) {
-      const isMatch = await bcrypt.compare(
-        obj.password.toString(),
-        secondAdmin.password
-      );
-
-      if (!isMatch) {
-        return { status: false, message: "Invalid credentials" };
-      } else {
-        return {
-          status: true,
-          name: secondAdmin.dataValues.name,
-          id: secondAdmin.dataValues.id,
-          type: "secondAdmin",
         };
       }
     }
 
     return { status: false, message: "Admin not found" };
   } catch (error) {
+    console.log(error.message);
     return { status: false, message: error.message };
   }
 };

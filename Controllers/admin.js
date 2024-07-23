@@ -3,26 +3,29 @@ const { admin } = require("../models");
 
 module.exports.addadmin = async (req, res) => {
   try {
+    console.log("------------------------")
     if (Object.keys(req.body).length === 0) {
       return res.status(400).json({ error: "empty request" });
     }
     if (
-      req.body.userName == undefined ||
-      req.body.userName == "" ||
+      req.body.email == undefined ||
+      req.body.email == "" ||
       req.body.password == undefined ||
       req.body.password == "" ||
       req.body.name == undefined ||
-      req.body.name == ""
+      req.body.name == ""   ||
+      req.body.adminid == undefined ||
+      req.body.adminid == ""
     ) {
       return res.status(400).json({ status: false, message: "empty fields" });
     }
-    console.log("came here")
+
     const result = await adminService.addadmin(req.body);
 
     if (result.status) {
       return res.json({ Status: "Success" });
-    } else if (result.message == "already registered user") {
-      return res.json({ status: false, message: "already registered user" });
+    } else if (result.message == "already registered admin") {
+      return res.json({ Status: "Failed", message: "user exist" });
     } else {
       return res.json({ Status: "Failed" });
     }
@@ -33,16 +36,19 @@ module.exports.addadmin = async (req, res) => {
 
 module.exports.addFirstAdmin = async (req, res) => {
   try {
+    console.log("------------------------")
     if (Object.keys(req.body).length === 0) {
       return res.status(400).json({ error: "empty request" });
     }
     if (
-      req.body.userName == undefined ||
-      req.body.userName == "" ||
+      req.body.email == undefined ||
+      req.body.email == "" ||
       req.body.password == undefined ||
       req.body.password == "" ||
       req.body.name == undefined ||
-      req.body.name == ""
+      req.body.name == ""   ||
+      req.body.adminid == undefined ||
+      req.body.adminid == ""
     ) {
       return res.status(400).json({ status: false, message: "empty fields" });
     }

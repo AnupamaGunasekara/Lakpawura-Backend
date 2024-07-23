@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       allowNull: false,
     },
-    userName: {
+    email: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -18,6 +18,22 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    address: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    mobileno: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    adminid: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    birthday: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    }
   });
 
   return admin;

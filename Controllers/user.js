@@ -52,6 +52,7 @@ module.exports.loginuser = async (req, res) => {
     console.log("failed login");
     res.json({ Status: "Failed" });
   } else {
+    console.log(result.token)
     res.cookie("token", result.token);
     res.json({ Status: "Success" });
   }
