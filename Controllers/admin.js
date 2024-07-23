@@ -85,7 +85,6 @@ module.exports.loginadmin = async (req, res) => {
   }
 };
 
-
 module.exports.getmessages = async (req, res) => {
   try {
     const messages = await adminService.getmessages();
@@ -96,6 +95,36 @@ module.exports.getmessages = async (req, res) => {
 };
 
 
+module.exports.getmessages = async (req, res) => {
+  try {
+    const messages = await adminService.getmessages();
+    return res.json(messages);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.removepost = async (req, res) => {
+  try {
+    await adminService.removepost(req.params.id);
+    return res.json({ message: "post deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.sendreply = async (req, res) => {
+  try {
+    const email = req.body.email;
+    const reply= req.body.reply;
+    console.log(email);
+    console.log(reply)
+    await adminService.sendreply(email,reply);
+    return res.json({ message: "email sent" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
 
 

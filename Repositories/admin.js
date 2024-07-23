@@ -1,19 +1,19 @@
 const bcrypt = require("bcrypt");
-const { admin, contacts } = require("../models");
+const { admin,contacts,post } = require("../models");
 const jwt = require("jsonwebtoken");
 
 
 
 module.exports.addadmin = async (obj) => {
   try {
-    const existingUser1 = await admin.findOne({
+    const existinguser1 = await admin.findOne({
       where: { userName: obj.userName },
     });
-    const existingUser2 = await SecondAdmin.findOne({
+    const existinguser2 = await SecondAdmin.findOne({
       where: { userName: obj.userName },
     });
 
-    if (existingUser1 || existingUser2) {
+    if (existinguser1 || existinguser2) {
       return { status: false, message: "already registered user" };
     }
     const hashedPw = await bcrypt.hash(obj.password.toString(), 10);
@@ -110,5 +110,19 @@ module.exports.getmessages = async () => {
     return messages;
   } catch (error) {
     throw new Error(`Error while fetching messages: ${error.message}`);
+  }
+};
+
+module.exports.removepost = async (id) => {
+  try {
+    //check wether taxpayerid exsits
+    const existpost = await post.findOne({ where: { id: id } });
+    if (existpost) {
+      await post.destroy({ where: { id: id } });
+    } else {
+      return { message: "post do not found" };
+    }
+  } catch (error) {
+    throw new Error(`Error while deleting taxpayer: ${error.message}`);
   }
 };

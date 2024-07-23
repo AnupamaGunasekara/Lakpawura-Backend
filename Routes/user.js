@@ -1,75 +1,73 @@
 const express = require("express");
-// const cookieParser = require("cookie-parser");
-// const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
+const jwt = require("jsonwebtoken");
 const router = express.Router();
-// const JwtService = require("../Services/JwtService");
+const JwtService = require("../Services/JwtService");
 
-// //For upload docs
-// const multer = require("multer");
-// //For upload docs
-// const storage = multer.diskStorage({
-//   destination: function (req, file, cb) {
-//     cb(null, "./public/Images"); // Destination folder for uploaded files
-//   },
-//   filename: function (req, file, cb) {
-//     const uniqueSuffix = Date.now() + "_" + file.originalname;
-//     cb(null, uniqueSuffix);
-//   },
-// });
-// const upload = multer({ storage: storage });
+//For upload docs
+const multer = require("multer");
+//For upload docs
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "./public/Images"); // Destination folder for uploaded files
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + "_" + file.originalname;
+    cb(null, uniqueSuffix);
+  },
+});
+const upload = multer({ storage: storage });
 
 const userController = require("../Controllers/user");
 
-// const { user } = require("../models");
+const { user } = require("../models");
 
-// router.post("/register", userController.adduser);
+router.post("/register", userController.adduser);
 
-// router.get("/auth", JwtService.verifyuser, userController.authenticateUser);
+router.get("/auth", JwtService.verifyuser, userController.authenticateuser);
 
-// router.get("/logout", userController.logoutuser);
+router.get("/logout", userController.logoutuser);
 
-// router.post("/login", userController.loginuser);
+router.post("/login", userController.loginuser);
 
-// router.patch("/verifyemail", userController.verifyEmail);
+router.patch("/verifyemail", userController.verifyEmail);
 
-// router.get(
-//   "/getuserbasicdetails/:id",
-//   JwtService.verifyuser,
-//   JwtService.roleBasedAuth(["user", "admin", "secondAdmin"]),
-//   userController.getBasicDetails
-// );
+router.get(
+  "/getuserbasicdetails/:id",
+  JwtService.verifyuser,
+  JwtService.roleBasedAuth(["user", "admin", "secondAdmin"]),
+  userController.getBasicDetails
+);
 
-// router.patch(
-//   "/updatebasicdetails",
-//   JwtService.verifyuser,
-//   JwtService.roleBasedAuth(["user", "admin", "secondAdmin"]),
-//   userController.updateBasicDetails
-// );
+router.patch(
+  "/updatebasicdetails",
+  JwtService.verifyuser,
+  JwtService.roleBasedAuth(["user", "admin", "secondAdmin"]),
+  userController.updateBasicDetails
+);
 
-// router.post("/forgot-password", userController.forgotPassword);
+router.post("/forgot-password", userController.forgotPassword);
 
-// router.get("/reset-password/:id/:token", userController.resetPassword);
+router.get("/reset-password/:id/:token", userController.resetPassword);
 
-// router.post("/addnew-password/:id/:token", userController.addNewPassword);
-
-
+router.post("/addnew-password/:id/:token", userController.addNewPassword);
 
 
 
 
-// router.patch("/updatePassword", userController.updatePassword);
 
-// //Upload files into database
-// router.post(
-//   "/fileUpload/:userId",
-//   upload.array("files"),
-//   userController.fileUpload
-// );
 
-// contact us
+router.patch("/updatePassword", userController.updatePassword);
+
+//Upload files into database
+router.post(
+  "/fileUpload/:userId",
+  upload.array("files"),
+  userController.fileUpload
+);
+
 router.post("/contactUs", userController.contactUs);
 
-
-
+router.get("/getposts", userController.getPosts);
 
 module.exports = router;

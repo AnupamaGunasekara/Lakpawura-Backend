@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 
-const sendMail = (id, email, token) => {
+const sendMail = (to,body) => {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     host: "smtp.gmail.com",
@@ -14,11 +14,11 @@ const sendMail = (id, email, token) => {
 
   const mailOptions = {
     from: '"Lakpawura" <isuruijs@gmail.com>',
-    to: `${email}`,
-    subject: "Reset Password...",
-    html: `<p>Hello, reset your password by clicking on this</p>
-        <br>
-        <a href="${process.env.FRONTEND_BASE_URL}/resetpassword?id=${id}&token=${token}">Click here to verify</a>
+    to: `${to}`,
+    subject: "Reply to your message",
+    html: `<p>
+    <br>
+    ${body}</p>
         `,
   };
 

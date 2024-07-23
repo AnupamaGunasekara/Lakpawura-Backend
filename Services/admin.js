@@ -98,3 +98,31 @@ module.exports.getmessages = async () => {
 
 
 
+module.exports.getmessages = async () => {
+  try {
+    const messages = await adminRepository.getmessages();
+    return messages;
+  } catch (error) {
+    throw new Error(`Error while fetching users: ${error.message}`);
+  }
+};
+
+module.exports.removepost = async (id) => {
+  try {
+    await adminRepository.removepost(id);
+    return { message: 'post deleted successfully' };
+  } catch (error) {
+    throw new Error(`Error while deleting taxpayer: ${error.message}`);
+  }
+};
+
+const composeMail = require("../utils/composeMail");
+
+module.exports.sendreply = async (email, reply) => {
+  try {
+    composeMail(email,reply);
+    return { message: "message sent successfully" };
+  } catch (error) {
+    throw new Error(`Error while sending sentmail: ${error.message}`);
+  }
+};

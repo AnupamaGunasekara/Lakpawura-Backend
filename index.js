@@ -6,14 +6,14 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 require("dotenv").config();
 
-
+const path = require('path');
 const db = require("./models");
 
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 //middleware
 app.use(

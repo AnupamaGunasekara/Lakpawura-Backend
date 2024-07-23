@@ -15,6 +15,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     discription: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    category: {
       type: DataTypes.STRING,
       allowNull: true,
     },
@@ -23,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: false,
       allowNull: false,
     },
-    review:{
+    rating:{
       type:DataTypes.INTEGER,
       allowNull: true,
   }

@@ -46,7 +46,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
-    isVerifiedUser: {
+    isVerifieduser: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
       allowNull: false,
