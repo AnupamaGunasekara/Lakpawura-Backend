@@ -7,7 +7,7 @@ const JwtService = require("../Services/JwtService")
 const adminController =require('../Controllers/admin')
 
 
-router.post('/register',JwtService.roleBasedAuth(["admin"]),adminController.addadmin);
+router.post('/register',adminController.addadmin);
 
 router.post('/createfirstadmin',adminController.addFirstAdmin);
 
