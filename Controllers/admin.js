@@ -23,7 +23,6 @@ module.exports.addadmin = async (req, res) => {
     const result = await adminService.addadmin(req.body);
 
     if (result.status) {
-      res.cookie("token", result.token);
       return res.json({ Status: "Success" });
     } else if (result.message == "already registered admin") {
       return res.json({ Status: "Failed", message: "user exist" });
