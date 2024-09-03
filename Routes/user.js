@@ -70,4 +70,10 @@ router.post("/contactUs", userController.contactUs);
 
 router.get("/getposts", userController.getPosts);
 
+
+
+router.get("/test", (req,res)=>{
+  res.send("Test").status(200);
+});
+
 module.exports = router;
