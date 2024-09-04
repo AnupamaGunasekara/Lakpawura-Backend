@@ -151,3 +151,13 @@ module.exports.updateAdminDetails= async (adminId, adminData) => {
       return { status: false, message: "An error occurred" };
     }
   };
+
+
+  module.exports.updatebasicdetailswithpassword = async (token, data) => {
+    try {
+      const created = await adminRepository.updatebasicdetailswithpassword(token, data);
+      return created;
+    } catch (error) {
+      return { status: false, message: error.message };
+    }
+  };

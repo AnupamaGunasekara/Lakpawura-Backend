@@ -158,6 +158,16 @@ module.exports.updateAdminDetails= async (req, res) => {
   };
 
 
-
+  module.exports.updatebasicdetailswithpassword = async (req, res) => {
+    try {
+      const result = await adminService.updatebasicdetailswithpassword(
+        req.cookies.token,
+        req.body
+      );
+      return res.status(200).json(result);
+    } catch (error) {
+      return { status: false };
+    }
+  };
 
 
