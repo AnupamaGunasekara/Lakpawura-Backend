@@ -264,10 +264,10 @@ module.exports.contactUs = async (firstName,lastName,email,phone,message) => {
   try{
     console.log(email);
     // Check if the email already exists in the database
-    const existingContact = await contacts.findOne({ where: { email: email } });
-    if (existingContact) {
-      return { success: false, message: 'Email already exists. Please use a different email address.' };
-    }
+    // const existingContact = await contacts.findOne({ where: { email: email } });
+    // if (existingContact) {
+    //   return { success: false, message: 'Email already exists. Please use a different email address.' };
+    // }
 
     // If the email does not exist, create a new contact
     const contact = await contacts.create({ firstName : firstName, lastName : lastName, email : email, phone : phone, message : message });

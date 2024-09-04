@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt");
-const { admin, contacts } = require("../models");
+const { admin,contacts,post } = require("../models");
 const jwt = require("jsonwebtoken");
 
 module.exports.addadmin = async (obj) => {
@@ -84,3 +84,59 @@ module.exports.getmessages = async () => {
     throw new Error(`Error while fetching messages: ${error.message}`);
   }
 };
+
+module.exports.removepost = async (id) => {
+  try {
+    //check wether taxpayerid exsits
+    const existpost = await post.findOne({ where: { id: id } });
+    if (existpost) {
+      await post.destroy({ where: { id: id } });
+    } else {
+      return { message: "post do not found" };
+    }
+  } catch (error) {
+    throw new Error(`Error while deleting taxpayer: ${error.message}`);
+  }
+};
+
+
+module.exports.getBasicDetails = async (id) => {
+  try {
+    const user = await admin.findOne({ where: { id: id } });
+    const {
+      password,
+      createdAt,
+      updatedAt,
+      ...userWithoutSensitiveInfo
+    } = user.dataValues;
+
+    return { status: true, data: userWithoutSensitiveInfo };
+  } catch (error) {
+    return { status: false };
+  }
+};
+
+
+module.exports.findAdminById = async (adminId) => {
+    try{
+      return await admin.findOne({ where: { id: adminId } });
+    }catch (error) {
+      return { status: false };
+    }
+  };
+
+  module.exports.findAdminByEmail = async (adminId) => {
+    try{
+      return await admin.findOne({ where: { email: email } });
+    }catch (error) {
+      return { status: false };
+    }
+  };
+
+  module.exports.updateAdmin = async (adminId, updateData) => {
+    try{
+      return await admin.update(updateData, { where: { id: adminId } });
+    }catch (error) {
+      return { status: false };
+    }
+  };

@@ -13,7 +13,7 @@ const sendMail = (name, email, emailToken) => {
   });
 
   const mailOptions = {
-    from: '"Tax Computation System" <isuruijs@gmail.com>',
+    from: '"Lakpawura" <isuruijs@gmail.com>',
     to: `${email}`,
     subject: "Please verify your email...",
     html: `<p>Hello ${name}, verify your email address by clicking on this</p>
