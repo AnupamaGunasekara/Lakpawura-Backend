@@ -15,9 +15,13 @@ router.post('/login',adminController.loginadmin);
 
 router.get('/getmessages',adminController.getmessages);
 
+router.get('/getdetails/:id',adminController.getBasicDetails);
+
 router.delete('/removepost/:id',adminController.removepost);
 
-router.post('/sendreply', adminController.sendreply)
+router.post('/sendreply', adminController.sendreply);
+
+router.post('/update/:adminId', adminController.updateAdminDetails);
 
 
 

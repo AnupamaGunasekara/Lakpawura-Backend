@@ -98,3 +98,45 @@ module.exports.removepost = async (id) => {
     throw new Error(`Error while deleting taxpayer: ${error.message}`);
   }
 };
+
+
+module.exports.getBasicDetails = async (id) => {
+  try {
+    const user = await admin.findOne({ where: { id: id } });
+    const {
+      password,
+      createdAt,
+      updatedAt,
+      ...userWithoutSensitiveInfo
+    } = user.dataValues;
+
+    return { status: true, data: userWithoutSensitiveInfo };
+  } catch (error) {
+    return { status: false };
+  }
+};
+
+
+module.exports.findAdminById = async (adminId) => {
+    try{
+      return await admin.findOne({ where: { id: adminId } });
+    }catch (error) {
+      return { status: false };
+    }
+  };
+
+  module.exports.findAdminByEmail = async (adminId) => {
+    try{
+      return await admin.findOne({ where: { email: email } });
+    }catch (error) {
+      return { status: false };
+    }
+  };
+
+  module.exports.updateAdmin = async (adminId, updateData) => {
+    try{
+      return await admin.update(updateData, { where: { id: adminId } });
+    }catch (error) {
+      return { status: false };
+    }
+  };
