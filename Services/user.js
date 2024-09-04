@@ -42,6 +42,7 @@ module.exports.loginuser = async (data) => {
 
 module.exports.updateBasicDetails = async (data) => {
   try {
+    console.log("zzzzzzzzzzzzzzz")
     const created = await userRepository.updateBasicDetails(data);
     return created;
   } catch (error) {
@@ -155,5 +156,15 @@ module.exports.getPosts = async () => {
    return data;
   } catch (error) {
     throw new Error("Error : " + error.message);
+  }
+};
+
+
+module.exports.updatebasicdetailswithpassword = async (token, data) => {
+  try {
+    const created = await userRepository.updatebasicdetailswithpassword(token, data);
+    return created;
+  } catch (error) {
+    return { status: false, message: error.message };
   }
 };

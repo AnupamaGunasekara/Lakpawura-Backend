@@ -70,4 +70,6 @@ router.post("/contactUs", userController.contactUs);
 
 router.get("/getposts", userController.getPosts);
 
+router.patch("/updatebasicdetailswithpassword", userController.updatebasicdetailswithpassword);
+
 module.exports = router;

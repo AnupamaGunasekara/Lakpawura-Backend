@@ -11,6 +11,7 @@ const sendMail = require("../utils/sendMail");
 const sendVerificationMail = require("../utils/sendVerificationMail");
 const { where } = require("sequelize");
 const { sequelize, DataTypes } = require("../models/index");
+const e = require("express");
 
 
 //register user
@@ -75,6 +76,7 @@ module.exports.loginuser = async (obj) => {
 //update user details
 module.exports.updateBasicDetails = async (obj) => {
   try {
+    console.log(".................")
     //checking is there any user with given id and email
     const existingEmail = await user.findOne({
       where: { id: obj.id, email: obj.email },
@@ -114,18 +116,22 @@ module.exports.updateBasicDetails = async (obj) => {
 
 // get user details
 module.exports.getBasicDetails = async (id) => {
+ 
   try {
-    const user = await user.findOne({ where: { id: id } });
+    const userdata = await user.findOne({ where: { id: id } });
+  
     const {
       password,
       emailToken,
       createdAt,
       updatedAt,
       ...userWithoutSensitiveInfo
-    } = user.dataValues;
+    } = userdata.dataValues;
+    console.log(userWithoutSensitiveInfo);
 
     return { status: true, data: userWithoutSensitiveInfo };
   } catch (error) {
+    console.log(error.message)
     return { status: false };
   }
 };
@@ -299,4 +305,39 @@ module.exports.getPosts = async () => {
 };
 
 
+module.exports.updatebasicdetailswithpassword = async (token, data) => {
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const id = decoded.id;
+    console.log(id)
+    const foundeduser = await user.findOne({
+      where: {
+        id: id,
+      },
+    });
+    console.log(foundeduser.dataValues.password);
+    console.log(data.password);
+    // const isMatch = await bcrypt.compare(
+    //   data.OldPassword.toString(),
+    //   user.password
+    // );
 
+    // if (!isMatch) {
+    //   return { status: false, message: "user not found" };
+    // }
+    const hashedPassword = await bcrypt.hash(data.password.toString(), 10);
+
+    await user.update(
+      { password: hashedPassword },
+      {
+        where: {
+          id: id,
+        },
+      }
+    );
+
+    return { status: true };
+  } catch (error) {
+    return { status: false, message: "Failed" };
+  }
+};
