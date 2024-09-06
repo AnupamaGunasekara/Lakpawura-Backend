@@ -41,8 +41,6 @@ router.get(
 
 router.patch(
   "/updatebasicdetails",
-  JwtService.verifyuser,
-  JwtService.roleBasedAuth(["user", "admin", "secondAdmin"]),
   userController.updateBasicDetails
 );
 

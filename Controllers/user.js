@@ -73,11 +73,13 @@ module.exports.verifyEmail = async (req, res) => {
 };
 
 module.exports.updateBasicDetails = async (req, res) => {
+  console.log("------------------")
 
-  try {
+  try { 
     if (Object.keys(req.body).length === 0) {
       return res.status(400).json({ error: "empty request" });
     }
+    console.log(req.body)
 
     if (
       req.body.email == undefined ||
