@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "root",
-    "password": "1234",
-    "database": "lakpawra",
-    "host": "localhost",
+    "username": "lakpawu1_admin",
+    "password": "Gw1whjR)pS0k",
+    "database": "lakpawu1_DB",
+    "host": "lakpawra.mysql.database.azure.com",
     "dialect": "mysql",
     "port": 3306
   },
@@ -17,7 +17,7 @@
   "production": {
     "username": "root",
     "password": null,
-    "database": "database_production",
+    "database": "database_production",  
     "host": "127.0.0.1",
     "dialect": "mysql"
   }
