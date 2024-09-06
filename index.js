@@ -19,7 +19,7 @@ app.use(cors({
   origin: true, // Accepts all origins, but adjust as necessary for security
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   credentials: true, // Important if your API uses cookies or sessions
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'] 
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept']
 }));
 
 app.use(bodyparser.json());
@@ -41,5 +41,7 @@ app.get('/', (req, res) => {
 
 
 db.sequelize.sync({force:false}).then(() => { 
-  console.log("Database synced");
+  app.listen(3000, () => {
+    console.log("Server running on port 3000");
+  });
 }); 

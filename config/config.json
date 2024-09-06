@@ -22,5 +22,5 @@
     "host": "lakpawra.mysql.database.azure.com",
     "dialect": "mysql",
     "port": 3306
-  }
+  } 
 }
