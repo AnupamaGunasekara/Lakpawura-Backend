@@ -81,17 +81,15 @@ module.exports.loginadmin = async (req, res) => {
   if (!result.status) {
     res.json({ Status: "Failed" });
   } else {
-    if (result.type === "admin") {
-      res.cookie("token", result.token);
-      res.json({ Status: "Success", Type: "admin" });
+    if (result.type === "admin") { 
+      res.json({ Status: "Success", Type: "admin", token: result.token });
     } else {
-      res.cookie("token", result.token);
       res.json({ Status: "Success", Type: "secondAdmin" });
-    }
+    } 
   }
 };
 
-module.exports.getmessages = async (req, res) => {
+module.exports.getmessages = async (req, res) => { 
   try {
     const messages = await adminService.getmessages();
     return res.json(messages);
