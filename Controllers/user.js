@@ -73,10 +73,14 @@ module.exports.verifyEmail = async (req, res) => {
 };
 
 module.exports.updateBasicDetails = async (req, res) => {
-  try {
+  console.log("------------------")
+
+  try { 
     if (Object.keys(req.body).length === 0) {
       return res.status(400).json({ error: "empty request" });
     }
+    console.log(req.body)
+
     if (
       req.body.email == undefined ||
       req.body.email == "" ||
@@ -85,6 +89,7 @@ module.exports.updateBasicDetails = async (req, res) => {
     ) {
       return res.status(400).json({ status: false, message: "empty fields" });
     }
+    console.log("!!!!!!!!!!!!!!!!!!")
     const result = await userService.updateBasicDetails(req.body);
 
     if (result.status) {
@@ -106,6 +111,7 @@ module.exports.updateBasicDetails = async (req, res) => {
 
 module.exports.getBasicDetails = async (req, res) => {
   try {
+    
     const result = await userService.getBasicDetails(req.params.id);
 
     if (result.status) {
@@ -242,4 +248,18 @@ module.exports.contactUs = async (req, res) => {
 module.exports.getPosts = async (req, res) => {
   const result = await userService.getPosts();
   return res.json(result);
+};
+
+
+
+module.exports.updatebasicdetailswithpassword = async (req, res) => {
+  try {
+    const result = await userService.updatebasicdetailswithpassword(
+      req.cookies.token,
+      req.body
+    );
+    return res.status(200).json(result);
+  } catch (error) {
+    return { status: false };
+  }
 };

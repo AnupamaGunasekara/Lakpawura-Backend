@@ -41,8 +41,6 @@ router.get(
 
 router.patch(
   "/updatebasicdetails",
-  JwtService.verifyuser,
-  JwtService.roleBasedAuth(["user", "admin", "secondAdmin"]),
   userController.updateBasicDetails
 );
 
@@ -71,9 +69,13 @@ router.post("/contactUs", userController.contactUs);
 router.get("/getposts", userController.getPosts);
 
 
+router.patch("/updatebasicdetailswithpassword", userController.updatebasicdetailswithpassword);
+
+
 
 router.get("/test", (req,res)=>{
   res.send("Test").status(200);
 });
+
 
 module.exports = router;

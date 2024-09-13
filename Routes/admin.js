@@ -23,6 +23,7 @@ router.post('/sendreply', adminController.sendreply);
 
 router.post('/update/:adminId', adminController.updateAdminDetails);
 
+router.patch("/updatebasicdetailswithpassword", adminController.updatebasicdetailswithpassword);
 
 
 

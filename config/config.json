@@ -1,9 +1,25 @@
 {
   "development": {
-    "username": "lakpawur_user88",
-    "password": "s8Q9]54k_Aek",
-    "database": "lakpawur_newdatabse",
-    "host": "162.214.155.142",
+    "username": "lakpawu1_admin",
+    "password": "Gw1whjR)pS0k",
+    "database": "lakpawu1_DB",
+    "host": "lakpawra.mysql.database.azure.com",
+    "dialect": "mysql",
+    "port": 3306,
+        "dialectOptions": {
+      "charset": "utf8mb4"
+    },
+    "define": {
+      "charset": "utf8mb4",
+      "collate": "utf8mb4_unicode_ci"
+    }
+
+  },
+  "test": {
+    "username": "lakpawu1_admin",
+    "password": "Gw1whjR)pS0k",
+    "database": "lakpawu1_DB",
+    "host": "lakpawra.mysql.database.azure.com",
     "dialect": "mysql",
     "port": 3306,
     "dialectOptions": {
@@ -14,26 +30,13 @@
       "collate": "utf8mb4_unicode_ci"
     }
   },
-  "test": {
-    "username": "root",
-    "password": null,
-    "database": "database_test",
-    "host": "127.0.0.1",
-    "dialect": "mysql",
-    "dialectOptions": {
-      "charset": "utf8mb4"
-    },
-    "define": {
-      "charset": "utf8mb4",
-      "collate": "utf8mb4_unicode_ci"
-    }
-  },
   "production": {
-    "username": "root",
-    "password": null,
-    "database": "database_production",
-    "host": "127.0.0.1",
+    "username": "lakpawu1_admin",
+    "password": "Gw1whjR)pS0k",
+    "database": "lakpawu1_DB",
+    "host": "lakpawra.mysql.database.azure.com",
     "dialect": "mysql",
+    "port": 3306,
     "dialectOptions": {
       "charset": "utf8mb4"
     },
