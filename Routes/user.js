@@ -68,6 +68,14 @@ router.post("/contactUs", userController.contactUs);
 
 router.get("/getposts", userController.getPosts);
 
+
 router.patch("/updatebasicdetailswithpassword", userController.updatebasicdetailswithpassword);
+
+
+
+router.get("/test", (req,res)=>{
+  res.send("Test").status(200);
+});
+
 
 module.exports = router;
