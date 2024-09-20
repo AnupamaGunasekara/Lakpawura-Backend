@@ -56,8 +56,7 @@ module.exports.addFirstAdmin = async (req, res) => {
     const result = await adminService.addFirstAdmin(req.body);
 
     if (result.status) {
-      res.cookie("token", result.token);
-      return res.json({ Status: "Success" });
+      res.json({ Status: "Success", Type: "admin", token: result.token });
     } else if (result.message == "user exist") {
       return res.json({ Status: "Failed", message: "user exist" });
     } else {
@@ -158,8 +157,10 @@ module.exports.updateAdminDetails= async (req, res) => {
 
   module.exports.updatebasicdetailswithpassword = async (req, res) => {
     try {
+      const authHeader = req.headers.authorization;
+      const token = authHeader.split(" ")[1];
       const result = await adminService.updatebasicdetailswithpassword(
-        req.cookies.token,
+        token,
         req.body
       );
       return res.status(200).json(result);

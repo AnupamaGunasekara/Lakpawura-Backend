@@ -22,7 +22,7 @@ module.exports.adduser = async (req, res) => {
 
     if (result.status) {
       res.cookie("token", result.token);
-      return res.json({ Status: "Success" });
+      res.json({ Status: "Success", Type: "user", token: result.token });
     } else if (result.message == "already registered email") {
       return res.json({ status: false, message: "already registered email" });
     } else {
@@ -52,9 +52,7 @@ module.exports.loginuser = async (req, res) => {
     console.log("failed login");
     res.json({ Status: "Failed" });
   } else {
-    console.log(result.token)
-    res.cookie("token", result.token);
-    res.json({ Status: "Success" });
+    res.json({ Status: "Success", Type: "user", token: result.token });
   }
 };
 
@@ -258,6 +256,12 @@ module.exports.updatebasicdetailswithpassword = async (req, res) => {
       req.cookies.token,
       req.body
     );
+    console.log("-------------")
+    const authHeader = req.headers.authorization;
+    console.log(authHeader)
+
+
+
     return res.status(200).json(result);
   } catch (error) {
     return { status: false };

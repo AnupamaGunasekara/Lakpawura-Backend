@@ -146,22 +146,11 @@ module.exports.findAdminById = async (adminId) => {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       const id = decoded.id;
-      console.log(id)
       const foundeduser = await admin.findOne({
         where: {
           id: id,
         },
       });
-      console.log(foundeduser.dataValues.password);
-      console.log(data.password);
-      // const isMatch = await bcrypt.compare(
-      //   data.OldPassword.toString(),
-      //   user.password
-      // );
-  
-      // if (!isMatch) {
-      //   return { status: false, message: "user not found" };
-      // }
       const hashedPassword = await bcrypt.hash(data.password.toString(), 10);
   
       await admin.update(
@@ -172,7 +161,7 @@ module.exports.findAdminById = async (adminId) => {
           },
         }
       );
-  
+      console.log("came here")
       return { status: true };
     } catch (error) {
       return { status: false, message: "Failed" };

@@ -34,8 +34,6 @@ router.patch("/verifyemail", userController.verifyEmail);
 
 router.get(
   "/getuserbasicdetails/:id",
-  JwtService.verifyuser,
-  JwtService.roleBasedAuth(["user", "admin", "secondAdmin"]),
   userController.getBasicDetails
 );
 
